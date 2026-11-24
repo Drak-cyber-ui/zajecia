@@ -1,0 +1,38 @@
+---
+title: "First"
+author: "Mateusz Deigsler"
+date: "2026-11-17"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+To jest **pogrubiony tekst**.
+
+To jest *tekst pisany kursywą*.
+
+Przykładowa funkcja to `mean()`.
+
+Lista:
+- Pierwszy element
+- Drugi element
+- Trzeci element
+
+1. Pierwszy punkt
+2. Drugi punkt
+
+To jest przykładowy przypis[^1].
+
+[^1]: Treść przypisu dolnego.
+
+---
+
+> To jest cytat blokowy.
+
+Wzór matematyczny:
+
+$$
+x^2 + y^2 = z^2
+$$

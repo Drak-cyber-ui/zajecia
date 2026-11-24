@@ -1,0 +1,111 @@
+---
+title: "Analiza rozmiarów diamentów"
+author: "Mateusz Deigsler"
+date: "2025-10-25"
+output:
+  html_document:
+    toc: true
+    df_print: paged
+  html_notebook:
+    toc: true
+    toc_float: true
+    theme: journal
+    self_contained: true
+bibliography: packages.bib
+---
+  
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(ggplot2)
+library(dplyr)
+data(diamonds)
+
+smaller <- diamonds %>% 
+  filter(carat <= 2.5)
+```
+
+We have data on `r nrow(diamonds)` diamonds. Only
+`r nrow(diamonds) - nrow(smaller)` are larger than
+2.5 carats. Below is the distribution of the remaining ones:
+  
+```{r, echo = FALSE}
+smaller %>% 
+  ggplot(aes(carat)) + 
+  geom_freqpoly(binwidth = 0.01)
+```
+
+
+## Interpretacja wykresu
+
+Na wykresie widać, że diamenty o mniejszej masie występują częściej niż diamenty o dużej masie. Wraz ze wzrostem wielkości diamentów ich liczebność maleje.
+
+## Wielkość diamentów według szlifu i koloru
+
+```{r wykres boxplot}
+library(ggplot2)
+
+ggplot(diamonds, aes(x = cut, y = carat, fill = color)) +
+  geom_boxplot()
+```
+
+## Największe diamenty
+
+```{r top-diamentow, cache=TRUE}
+library(dplyr)
+
+top_diamentow <- diamonds %>%
+  arrange(desc(carat)) %>%
+  head(20)
+
+knitr::kable(
+  top_diamentow %>%
+    select(carat, cut, color, clarity, price),
+  caption = "20 największych diamentów"
+)
+```
+
+Średnia wielkość 20 największych diamentów wynosi `r mean(top_diamentow$carat)` karata.
+
+
+```{r srednia-cena, cache=TRUE}
+srednia_cena <- mean(top_diamentow$price)
+srednia_cena
+```
+
+```{r liczba-diamentow, cache=TRUE}
+liczba_diamentow <- top_diamentow %>%
+  count(cut)
+
+liczba_diamentow
+```
+
+
+```{r wykres-top, cache=TRUE}
+ggplot(liczba_diamentow, aes(x = cut, y = n)) +
+  geom_bar(stat = "identity") +
+  labs(
+    title = "Największe diamenty według szlifu",
+    x = "Szlif",
+    y = "Liczba diamentów",
+    caption = paste(
+      "Średnia cena dla", nrow(top_diamentow),
+      "największych diamentów wynosi",
+      round(srednia_cena, 2)
+    )
+  )
+```
+
+```{r bibliografia, include=FALSE}
+knitr::write_bib(
+  c("ggplot2", "dplyr"),
+  "packages.bib"
+)
+```
+
+
+Wykresy wykonano za pomocą pakietu ggplot2 [@R-ggplot2].
+
+Pakiet @R-dplyr wykorzystano do przetwarzania danych.
+
+# Bibliografia
