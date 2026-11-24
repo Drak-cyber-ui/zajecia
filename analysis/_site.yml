@@ -8,7 +8,7 @@ navbar:
   - text: About
     href: about.html
   - text: cv
-    href: cv.html
+    href: cv1.html
     
 output:
   workflowr::wflow_html:
